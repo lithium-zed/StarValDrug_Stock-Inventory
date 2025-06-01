@@ -5,7 +5,10 @@ public class DrugData{
     int quantity, batch_number;
     double purchase_cost, costPunit, selling_price;
 
-    public DrugData(String vendor_name, String c_p, String brand_name, String generic_name, String exp_date, String unit_of_measure, int quantity, int batch_number, double purchase_cost, double costPunit, double selling_price) {
+    public DrugData(int batch_number, String vendor_name, String c_p, String brand_name,
+                    String generic_name, int quantity,
+                    String unit_of_measure, String exp_date,
+                    double purchase_cost, double costPunit, double selling_price) {
         this.vendor_name = vendor_name;
         this.c_p = c_p;
         this.brand_name = brand_name;
