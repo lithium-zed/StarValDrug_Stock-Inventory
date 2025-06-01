@@ -44,61 +44,79 @@ public class InventoryFrame extends JFrame {
         JPanel productInfoPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5); // Padding around components
+        // Set fill and anchor defaults once if they are common for most components
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Make fields fill horizontally
+        gbc.anchor = GridBagConstraints.WEST;    // Anchor labels to the west
 
         productInfoPanel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Product Details", TitledBorder.LEFT, TitledBorder.TOP)); // Changed title
+                BorderFactory.createEtchedBorder(), "Product Details", TitledBorder.LEFT, TitledBorder.TOP));
 
         // Add components to productInfoPanel using GridBagLayout
+        // We'll increment gbc.gridy for each new row of label/field pairs
+
+        int row = 0; // Keep track of the current row
+
         // Vendor Name
-        gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.WEST; productInfoPanel.add(vendorName, gbc);
-        gbc.gridx = 1; gbc.gridy = 0; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0; productInfoPanel.add(vendorField, gbc);
+        gbc.gridx = 0; gbc.gridy = row; productInfoPanel.add(vendorName, gbc);
+        gbc.gridx = 1; gbc.gridy = row; productInfoPanel.add(vendorField, gbc);
+        row++;
 
         // Brand Name
-        gbc.gridx = 0; gbc.gridy = 1; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0; productInfoPanel.add(brandName, gbc);
-        gbc.gridx = 1; gbc.gridy = 1; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0; productInfoPanel.add(brandField, gbc);
+        gbc.gridx = 0; gbc.gridy = row; productInfoPanel.add(brandName, gbc);
+        gbc.gridx = 1; gbc.gridy = row; productInfoPanel.add(brandField, gbc);
+        row++;
 
         // Generic Name
-        gbc.gridx = 0; gbc.gridy = 2; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0; productInfoPanel.add(genericName, gbc);
-        gbc.gridx = 1; gbc.gridy = 2; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0; productInfoPanel.add(genericField, gbc);
+        gbc.gridx = 0; gbc.gridy = row; productInfoPanel.add(genericName, gbc);
+        gbc.gridx = 1; gbc.gridy = row; productInfoPanel.add(genericField, gbc);
+        row++;
 
         // Batch #
-        gbc.gridx = 0; gbc.gridy = 3; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0; productInfoPanel.add(batchNumber, gbc);
-        gbc.gridx = 1; gbc.gridy = 3; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0; productInfoPanel.add(batchField, gbc);
+        gbc.gridx = 0; gbc.gridy = row; productInfoPanel.add(batchNumber, gbc);
+        gbc.gridx = 1; gbc.gridy = row; productInfoPanel.add(batchField, gbc);
+        row++;
 
         // Expiration Date
-        gbc.gridx = 0; gbc.gridy = 4; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0; productInfoPanel.add(expirationDate, gbc);
-        gbc.gridx = 1; gbc.gridy = 4; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0; productInfoPanel.add(expField, gbc);
+        gbc.gridx = 0; gbc.gridy = row; productInfoPanel.add(expirationDate, gbc);
+        gbc.gridx = 1; gbc.gridy = row; productInfoPanel.add(expField, gbc);
+        row++;
 
         // Unit Of Measure
-        gbc.gridx = 0; gbc.gridy = 5; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0; productInfoPanel.add(unitOfMeasure, gbc);
-        gbc.gridx = 1; gbc.gridy = 5; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0; productInfoPanel.add(uomField, gbc);
+        gbc.gridx = 0; gbc.gridy = row; productInfoPanel.add(unitOfMeasure, gbc);
+        gbc.gridx = 1; gbc.gridy = row; productInfoPanel.add(uomField, gbc);
+        row++;
 
         // Quantity
-        gbc.gridx = 0; gbc.gridy = 6; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0; productInfoPanel.add(quantity, gbc);
-        gbc.gridx = 1; gbc.gridy = 6; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0; productInfoPanel.add(qtyField, gbc);
+        gbc.gridx = 0; gbc.gridy = row; productInfoPanel.add(quantity, gbc);
+        gbc.gridx = 1; gbc.gridy = row; productInfoPanel.add(qtyField, gbc);
+        row++;
 
         // Purchase Cost
-        gbc.gridx = 0; gbc.gridy = 7; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0; productInfoPanel.add(purchaseCost, gbc);
-        gbc.gridx = 1; gbc.gridy = 7; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0; productInfoPanel.add(prchsField, gbc);
+        gbc.gridx = 0; gbc.gridy = row; productInfoPanel.add(purchaseCost, gbc);
+        gbc.gridx = 1; gbc.gridy = row; productInfoPanel.add(prchsField, gbc);
+        row++;
 
         // Cost / Unit of Measure
-        gbc.gridx = 0; gbc.gridy = 8; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0; productInfoPanel.add(costPerUnitofMeasure, gbc);
-        gbc.gridx = 1; gbc.gridy = 8; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0; productInfoPanel.add(costPerUnitField, gbc);
+        gbc.gridx = 0; gbc.gridy = row; productInfoPanel.add(costPerUnitofMeasure, gbc);
+        gbc.gridx = 1; gbc.gridy = row; productInfoPanel.add(costPerUnitField, gbc);
+        row++;
 
         // Selling Price
-        gbc.gridx = 0; gbc.gridy = 9; gbc.fill = GridBagConstraints.NONE; gbc.weightx = 0; productInfoPanel.add(sellingPrice, gbc);
-        gbc.gridx = 1; gbc.gridy = 9; gbc.fill = GridBagConstraints.HORIZONTAL; gbc.weightx = 1.0; productInfoPanel.add(sellingPriceField, gbc);
+        gbc.gridx = 0; gbc.gridy = row; productInfoPanel.add(sellingPrice, gbc);
+        gbc.gridx = 1; gbc.gridy = row; productInfoPanel.add(sellingPriceField, gbc);
+        row++;
+
 
         // --- Create a JPanel for Product Origin Radio Buttons ---
         JPanel productOriginPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         productOriginPanel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createEtchedBorder(), "Product Origin", TitledBorder.LEFT, TitledBorder.TOP)); // Changed title
+                BorderFactory.createEtchedBorder(), "Product Origin", TitledBorder.LEFT, TitledBorder.TOP));
 
-        c = new JRadioButton("Consigned"); // Label changed
-        p = new JRadioButton("Purchased"); // Label changed
+        c = new JRadioButton("Consigned");
+        p = new JRadioButton("Purchased");
 
         // Group the radio buttons
-        productOriginGroup = new ButtonGroup(); // Renamed ButtonGroup variable
+        productOriginGroup = new ButtonGroup();
         productOriginGroup.add(c);
         productOriginGroup.add(p);
 
