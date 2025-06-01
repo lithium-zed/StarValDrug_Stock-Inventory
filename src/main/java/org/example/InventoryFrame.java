@@ -3,6 +3,7 @@ package org.example;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class InventoryFrame extends JFrame {
     JLabel vendorName, brandName, genericName, batchNumber, expirationDate, unitOfMeasure,
@@ -10,8 +11,12 @@ public class InventoryFrame extends JFrame {
     JTextField vendorField, brandField, genericField, batchField, expField, uomField, qtyField,
             prchsField, costPerUnitField, sellingPriceField;
 
-    JRadioButton c, p; // Now for Consigned and Purchased
-    ButtonGroup productOriginGroup; // Renamed for clarity
+    // Table components - declared as instance variables
+    private JTable inventoryTable;
+    private InventoryTableModel inventoryTableModel;
+
+    JRadioButton c, p;
+    ButtonGroup productOriginGroup;
 
     public InventoryFrame() throws HeadlessException {
         super("Inventory Management");
@@ -40,19 +45,15 @@ public class InventoryFrame extends JFrame {
         costPerUnitField = new JTextField(15);
         sellingPriceField = new JTextField(15);
 
-        // --- Create a JPanel for Product Information ---
+        // --- Create a JPanel for Product Information (Input Fields) ---
         JPanel productInfoPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5); // Padding around components
-        // Set fill and anchor defaults once if they are common for most components
         gbc.fill = GridBagConstraints.HORIZONTAL; // Make fields fill horizontally
         gbc.anchor = GridBagConstraints.WEST;    // Anchor labels to the west
 
         productInfoPanel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "Product Details", TitledBorder.LEFT, TitledBorder.TOP));
-
-        // Add components to productInfoPanel using GridBagLayout
-        // We'll increment gbc.gridy for each new row of label/field pairs
 
         int row = 0; // Keep track of the current row
 
@@ -115,33 +116,56 @@ public class InventoryFrame extends JFrame {
         c = new JRadioButton("Consigned");
         p = new JRadioButton("Purchased");
 
-        // Group the radio buttons
         productOriginGroup = new ButtonGroup();
         productOriginGroup.add(c);
         productOriginGroup.add(p);
 
-        // Add radio buttons to their panel
         productOriginPanel.add(c);
         productOriginPanel.add(p);
 
-        // --- Main content panel to hold other panels ---
-        JPanel mainContentPanel = new JPanel(new BorderLayout(10, 10));
+        // --- Create a JPanel to hold both input and radio button panels ---
+        // This panel will organize the input forms (Product Details + Product Origin)
+        JPanel inputSectionPanel = new JPanel(new BorderLayout(10, 10)); // 10px gap
+        inputSectionPanel.add(productInfoPanel, BorderLayout.CENTER);
+        inputSectionPanel.add(productOriginPanel, BorderLayout.SOUTH);
 
-        // Add the product info panel to the center
-        mainContentPanel.add(productInfoPanel, BorderLayout.CENTER);
-        // Add the product origin panel to the south
-        mainContentPanel.add(productOriginPanel, BorderLayout.SOUTH);
+        // --- Setup the JTable ---
+        inventoryTableModel = new InventoryTableModel(); // Initialize your table model
 
-        // Add the main content panel to the JFrame
-        this.add(mainContentPanel);
+        // Add some dummy data for testing (remove in production)
+        inventoryTableModel.addDrugData(new DrugData(1001, "PharmaCo", "Purchased", "BrandA", "GenericX", 50, "Box", "12/31/2025", 10.50, 0.21, 0.35));
+        inventoryTableModel.addDrugData(new DrugData(1002, "MediSupp", "Consigned", "BrandB", "GenericY", 100, "Tablet", "06/15/2024", 0.05, 0.05, 0.10));
+        inventoryTableModel.addDrugData(new DrugData(1003, "Health Inc", "Purchased", "BrandC", "GenericZ", 20, "Vial", "01/01/2026", 50.00, 2.50, 4.00));
+        // You can add more dummy data here
 
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
+        inventoryTable = new JTable(inventoryTableModel); // Create the table with your model
+        inventoryTable.setFillsViewportHeight(true); // Makes the table fill the height of the scroll pane
+        inventoryTable.setAutoCreateRowSorter(true); // Enables sorting by clicking column headers
+
+        // Put the table inside a JScrollPane for scrollability
+        JScrollPane scrollPane = new JScrollPane(inventoryTable);
+        // Set a preferred size for the scroll pane to help with initial layout
+        scrollPane.setPreferredSize(new Dimension(850, 200)); // Adjust width and height as needed
+
+        // --- Main layout panel for the entire frame content ---
+        // This panel uses BorderLayout to place the JScrollPane at the NORTH
+        // and the input form section (inputSectionPanel) in the CENTER.
+        JPanel mainLayoutPanel = new JPanel(new BorderLayout(10, 10)); // Outer BorderLayout with 10px gap
+
+        mainLayoutPanel.add(scrollPane, BorderLayout.NORTH);
+        mainLayoutPanel.add(inputSectionPanel, BorderLayout.CENTER);
+
+        // Add the main layout panel to the JFrame
+        this.add(mainLayoutPanel);
+
+        this.pack(); // Size the frame to fit its components
+        this.setLocationRelativeTo(null); // Center the frame on the screen
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close operation
+        this.setVisible(true); // Make the frame visible
     }
 
     public static void main(String[] args) {
+        // Ensure GUI updates are done on the Event Dispatch Thread (EDT)
         SwingUtilities.invokeLater(InventoryFrame::new);
     }
 }
