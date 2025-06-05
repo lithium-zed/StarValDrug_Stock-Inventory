@@ -1,7 +1,9 @@
 package org.example;
 
 import javax.swing.table.AbstractTableModel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class InventoryTableModel extends AbstractTableModel {
@@ -9,6 +11,7 @@ public class InventoryTableModel extends AbstractTableModel {
     String[] header = {"Batch #", "Vendor Name", "C/P", "Brand Name", "Generic Name", "Quantity", "Unit of Measure",
                             "Exp Date", "Purchase Cost", "Cost/Unit", "Selling Price"};
 
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
     public InventoryTableModel() {
         this.drugDataList = new ArrayList<>();
     }
@@ -53,5 +56,34 @@ public class InventoryTableModel extends AbstractTableModel {
             default: return null;
         }
     }
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
 
+        switch (columnIndex) {
+            case 0:
+                return Integer.class;       // Batch #
+            case 1:
+                return String.class;        // Vendor Name
+            case 2:
+                return String.class;        // Product Origin
+            case 3:
+                return String.class;        // Brand Name
+            case 4:
+                return String.class;        // Generic Name
+            case 5:
+                return Integer.class;       // Quantity
+            case 6:
+                return String.class;        // Unit Of Measure
+            case 7:
+                return Date.class;          // EXTREMELY IMPORTANT: Tell sorter it's a Date
+            case 8:
+                return Double.class;        // Purchase Cost
+            case 9:
+                return Double.class;        // Cost / UOM
+            case 10:
+                return Double.class;       // Selling Price
+            default:
+                return Object.class;
+        }
+    }
 }

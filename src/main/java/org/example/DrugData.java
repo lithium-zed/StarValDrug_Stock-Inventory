@@ -1,25 +1,43 @@
 package org.example;
 
+import javax.swing.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class DrugData{
-    String vendor_name, c_p, brand_name, generic_name, exp_date, unit_of_measure;
+    String vendor_name, c_p, brand_name, generic_name,unit_of_measure;
     int quantity, batch_number;
     double purchase_cost, costPunit, selling_price;
+    Date exp_date;
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
     public DrugData(int batch_number, String vendor_name, String c_p, String brand_name,
                     String generic_name, int quantity,
-                    String unit_of_measure, String exp_date,
+                    String unit_of_measure, String expDateString,
                     double purchase_cost, double costPunit, double selling_price) {
         this.vendor_name = vendor_name;
         this.c_p = c_p;
         this.brand_name = brand_name;
         this.generic_name = generic_name;
-        this.exp_date = exp_date;
+        try{
+            this.exp_date = DATE_FORMAT.parse(expDateString);
+        }catch (ParseException e){
+            JOptionPane.showMessageDialog(null, String.format("Error parsing date: %s - %s", expDateString,e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE));
+            this.exp_date = null;
+        }
         this.unit_of_measure = unit_of_measure;
         this.quantity = quantity;
         this.batch_number = batch_number;
         this.purchase_cost = purchase_cost;
         this.costPunit = costPunit;
         this.selling_price = selling_price;
+    }
+    public String getExpirationDateAsString(){
+        if(exp_date == null){
+            return "";
+        }
+        return DATE_FORMAT.format(exp_date);
     }
 
     public String getVendor_name() {
@@ -54,12 +72,12 @@ public class DrugData{
         this.generic_name = generic_name;
     }
 
-    public String getExp_date() {
-        return exp_date;
+    public void setExp_date(Date exp_date) {
+        this.exp_date = exp_date;
     }
 
-    public void setExp_date(String exp_date) {
-        this.exp_date = exp_date;
+    public Date getExp_date() {
+        return exp_date;
     }
 
     public String getUnit_of_measure() {
