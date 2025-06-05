@@ -2,6 +2,6 @@ package org.example;
 
 import javax.swing.*;
 
-public class PurchaseFrame extends JFrame {
+public class SalesFrame extends JFrame {
 
 }
