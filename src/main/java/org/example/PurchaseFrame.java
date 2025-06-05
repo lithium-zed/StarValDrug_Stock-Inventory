@@ -1,2 +1,7 @@
-package org.example;public class PurchaseFrame {
+package org.example;
+
+import javax.swing.*;
+
+public class PurchaseFrame extends JFrame {
+
 }
