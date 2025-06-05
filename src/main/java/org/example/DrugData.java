@@ -53,7 +53,7 @@
                 return 0.0; // Or some default value if targetMargin is not set
             }
         }
-        private double calculateMargin(){
+        public double calculateMargin(){
             return ((getSelling_price() - getCostPunit()) / getCostPunit()) * 100;
         }
         public double getMargin(){
@@ -61,6 +61,10 @@
         }
         public double getSuggested_price(){
             return calculateSuggestedPrice();
+        }
+
+        public void setSuggested_price(double suggested_price) {
+            this.suggested_price = suggested_price;
         }
 
         public String getExpirationDateAsString(){

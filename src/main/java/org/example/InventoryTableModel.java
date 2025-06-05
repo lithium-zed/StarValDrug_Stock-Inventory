@@ -1,6 +1,8 @@
 package org.example;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +20,16 @@ public class InventoryTableModel extends AbstractTableModel {
     public void addDrugData(DrugData drug) {
         drugDataList.add(drug);
         fireTableRowsInserted(drugDataList.size() - 1, drugDataList.size() - 1);
+    }
+
+    public void decrementQuantityByBatch(int batchNumber, int quantity){
+        for(int i = 0; i < drugDataList.size();i++){
+            if(drugDataList.get(i).getBatch_number() == batchNumber){
+                int initialQuantiy = drugDataList.get(i).getQuantity();
+                drugDataList.get(i).setQuantity(initialQuantiy - quantity);
+            }
+        }
+        fireTableDataChanged();
     }
 
     @Override
@@ -90,6 +102,92 @@ public class InventoryTableModel extends AbstractTableModel {
                 return Double.class;
             default:
                 return Object.class;
+        }
+    }
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+
+        switch (columnIndex) {
+            case 1: // Vendor Name
+            case 2: // C/P
+            case 3: // Brand Name
+            case 4: // Generic Name
+            case 5: // Quantity
+            case 6: // Unit of Measure
+            case 7: // Exp Date
+            case 8: // Purchase Cost
+            case 9: // Cost/Unit
+            case 10: // Selling Price
+            case 11: // Suggested Selling Price
+                return true;
+            default:
+                return false; // Batch # (0) and Margin (12) not editable
+        }
+    }
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        if (rowIndex >= 0 && rowIndex < drugDataList.size()) {
+            DrugData drug = drugDataList.get(rowIndex);
+            try {
+                switch (columnIndex) {
+                    case 1: // Vendor Name
+                        drug.setVendor_name((String) aValue);
+                        break;
+                    case 2: // C/P (assuming String)
+                        drug.setC_p((String) aValue);
+                        break;
+                    case 3: // Brand Name
+                        drug.setBrand_name((String) aValue);
+                        break;
+                    case 4: // Generic Name
+                        drug.setGeneric_name((String) aValue);
+                        break;
+                    case 5: // Quantity
+                        int newQuantity = Integer.parseInt(aValue.toString());
+                        if (newQuantity < 0) { // Disallow negative quantity
+                            JOptionPane.showMessageDialog(null, "Quantity cannot be negative.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        drug.setQuantity(newQuantity);
+                        break;
+                    case 6: // Unit of Measure
+                        drug.setUnit_of_measure((String) aValue);
+                        break;
+                    case 7: // Exp Date (String to Date conversion)
+                        drug.setExp_date(DATE_FORMAT.parse(aValue.toString()));
+                        break;
+                    case 8: // Purchase Cost
+                        drug.setPurchase_cost(Double.parseDouble(aValue.toString()));
+                        break;
+                    case 9: // Cost/Unit
+                        drug.setCostPunit(Double.parseDouble(aValue.toString()));
+                        break;
+                    case 10: // Selling Price
+                        drug.setSelling_price(Double.parseDouble(aValue.toString()));
+                        break;
+                    case 11: // Suggested Selling Price
+                        drug.setSuggested_price(Double.parseDouble(aValue.toString()));
+                        break;
+                    default:
+                        return; // Not an editable column
+                }
+
+                drug.calculateMargin();
+
+
+                fireTableCellUpdated(rowIndex, columnIndex);
+
+                if (columnIndex >= 8 && columnIndex <= 11) {
+                    fireTableCellUpdated(rowIndex, 12);
+                }
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Invalid number format for input. Please enter a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ParseException e) {
+                JOptionPane.showMessageDialog(null, "Invalid date format for Expiration Date. Use MM/dd/yyyy.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ClassCastException e) {
+                JOptionPane.showMessageDialog(null, "Invalid data type for input. Please check the value.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

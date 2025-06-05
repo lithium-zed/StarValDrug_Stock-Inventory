@@ -1,25 +1,25 @@
 package org.example;
 
 public class CheckoutData {
-    int branch_number;
+    int batch_number;
     String brand_name, generic_name;
     int quantity;
     double price;
 
-    public CheckoutData(int branch_number, String brand_name, String generic_name, int quantity, double price) {
-        this.branch_number = branch_number;
+    public CheckoutData(int batch_number, String brand_name, String generic_name, int quantity, double price) {
+        this.batch_number = batch_number;
         this.brand_name = brand_name;
         this.generic_name = generic_name;
         this.quantity = quantity;
         this.price = price;
     }
 
-    public int getBranch_number() {
-        return branch_number;
+    public int getBatch_number() {
+        return batch_number;
     }
 
-    public void setBranch_number(int branch_number) {
-        this.branch_number = branch_number;
+    public void setBatch_number(int batch_number) {
+        this.batch_number = batch_number;
     }
 
     public String getBrand_name() {

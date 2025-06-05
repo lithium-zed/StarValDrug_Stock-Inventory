@@ -220,6 +220,7 @@ public class InventoryFrame extends JFrame implements ActionListener {
         inventoryTable.setAutoCreateRowSorter(true);
         inventoryTable.getTableHeader().setReorderingAllowed(false);
 
+
         sorter = new TableRowSorter<>(inventoryTableModel);
         inventoryTable.setRowSorter(sorter);
 
@@ -232,10 +233,9 @@ public class InventoryFrame extends JFrame implements ActionListener {
                     Date date2 = parser.parse(dateStr2);
                     return date1.compareTo(date2);
                 } catch (ParseException e) {
-                    // Handle parsing errors (e.g., malformed date strings)
-                    // You might want to log this or treat malformed dates as first/last
+
                     System.err.println("Error parsing date for sorting: " + e.getMessage());
-                    // Fallback to string comparison if parsing fails, or place them at the end/beginning
+
                     return dateStr1.compareTo(dateStr2); // Fallback
                 }
             }

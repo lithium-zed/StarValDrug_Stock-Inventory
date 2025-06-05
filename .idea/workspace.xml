@@ -7,6 +7,11 @@
     <list default="true" id="2695f09b-bb14-42dd-b85d-cc904ffef095" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/CheckOutTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/CheckOutTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/CheckoutData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/CheckoutData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/DrugData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/DrugData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/InventoryFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/InventoryFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/InventoryTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/InventoryTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/SaleTransaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/SaleTransaction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/SalesFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/SalesFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,22 +38,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.InventoryFrame.executor": "Run",
-    "Application.Main.executor": "Run",
-    "Application.SalesFrame.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/ASUS/Desktop/Java Stuffs/Payroll_cle",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.InventoryFrame.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.SalesFrame.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ASUS/Desktop/Java Stuffs/Payroll_cle&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
