@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2695f09b-bb14-42dd-b85d-cc904ffef095" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/DrugData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/DrugData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/InventoryFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/InventoryFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/InventoryTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/InventoryTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Pricings_Margins.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/SalesFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/SalesFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/TargetMargin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/TargetMargin.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +43,10 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true"
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
 }]]></component>
   <component name="RunManager">

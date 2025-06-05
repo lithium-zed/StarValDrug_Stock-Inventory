@@ -138,6 +138,8 @@ public class InventoryFrame extends JFrame implements ActionListener {
         // Changed to GridBagLayout for better alignment of label and field
         setButton = new JButton("Set");
         setButton.addActionListener(this);
+        targetMarginField.setText("0.25");
+        targetMargin = new TargetMargin(0.25); // Initialize the targetMargin object
         JPanel targetMarginPanel = new JPanel(new GridBagLayout());
         GridBagConstraints tmg_gbc = new GridBagConstraints();
         tmg_gbc.insets = new Insets(5, 5, 5, 5);
@@ -173,10 +175,35 @@ public class InventoryFrame extends JFrame implements ActionListener {
         // --- Setup the JTable ---
         inventoryTableModel = new InventoryTableModel();
 
-        // Add some dummy data for testing
-        inventoryTableModel.addDrugData(new DrugData(1001, "PharmaCo", "Purchased", "BrandA", "GenericX", 50, "Box", "12/31/2025", 10.50, 0.21, 0.35));
-        inventoryTableModel.addDrugData(new DrugData(1002, "MediSupp", "Consigned", "BrandB", "GenericY", 100, "Tablet", "06/15/2024", 0.05, 0.05, 0.10));
-        inventoryTableModel.addDrugData(new DrugData(1003, "Health Inc", "Purchased", "BrandC", "GenericZ", 20, "Vial", "01/01/2026", 50.00, 2.50, 4.00));
+        // Dummy Data (assuming targetMargin is already initialized, e.g., to 0.25)
+        inventoryTableModel.addDrugData(new DrugData(
+                1001, "Unilab Pharma", "Purchased", "Biogesic", "Paracetamol",
+                100, "Tablet", "11/30/2026", 150.00, 1.50, 2.50, targetMargin
+        ));
+        inventoryTableModel.addDrugData(new DrugData(
+                1002, "Pascual Lab", "Consigned", "Ascof Forte", "Lagundi",
+                50, "Capsule", "08/15/2025", 250.00, 5.00, 8.00, targetMargin
+        ));
+        inventoryTableModel.addDrugData(new DrugData(
+                1003, "RiteMed Phils.", "Purchased", "Neozep Forte", "Phenylephrine HCl",
+                75, "Tablet", "02/01/2027", 200.00, 2.67, 4.50, targetMargin
+        ));
+        inventoryTableModel.addDrugData(new DrugData(
+                1004, "Mundipharma", "Purchased", "Betadine", "Povidone-Iodine",
+                20, "Bottle", "05/10/2026", 300.00, 15.00, 25.00, targetMargin
+        ));
+        inventoryTableModel.addDrugData(new DrugData(
+                1005, "Servier Phils.", "Consigned", "Daflon", "Diosmin/Hesperidin",
+                40, "Tablet", "07/25/2025", 800.00, 20.00, 35.00, targetMargin
+        ));
+        inventoryTableModel.addDrugData(new DrugData(
+                1006, "GSK Philippines", "Purchased", "Amoclav", "Amoxicillin-Clavulanic Acid",
+                60, "Tablet", "09/05/2025", 600.00, 10.00, 18.00, targetMargin
+        ));
+        inventoryTableModel.addDrugData(new DrugData(
+                1007, "Bayer Phils.", "Consigned", "Canesten", "Clotrimazole",
+                10, "Tube", "04/22/2026", 180.00, 18.00, 30.00, targetMargin
+        ));
 
         inventoryTable = new JTable(inventoryTableModel);
         inventoryTable.setFillsViewportHeight(true);
@@ -240,6 +267,10 @@ public class InventoryFrame extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(this, "Please fill all text fields.", "Input Error", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
+                if (targetMargin == null || targetMarginField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Please set the Target Margin before adding a drug.", "Input Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
 
 
                 // Parse numerical fields, handle potential errors
@@ -254,7 +285,7 @@ public class InventoryFrame extends JFrame implements ActionListener {
                 // For now, I'm passing a dummy 0.0 for targetMargin if DrugData doesn't support it yet
                 DrugData newDrug = new DrugData(
                         batchNum, vendor, cpType, brand, generic, qty,
-                        uom, expDate, purchaseC, costPU, sellingP
+                        uom, expDate, purchaseC, costPU, sellingP, targetMargin
                 );
 
                 // 3. Add to table model
@@ -272,8 +303,18 @@ public class InventoryFrame extends JFrame implements ActionListener {
                 ex.printStackTrace();
             }
         } else if (e.getSource() == setButton) {
-            targetMargin = new TargetMargin(Double.parseDouble(targetMarginField.getText()),this);
-            System.out.println(targetMargin.getTargetMargin());
+            try {
+                double marginValue = Double.parseDouble(targetMarginField.getText());
+                targetMargin = new TargetMargin(marginValue);
+                // Update suggested price for existing drugs when target margin changes
+                for (int i = 0; i < inventoryTableModel.getRowCount(); i++) {
+                    DrugData drug = inventoryTableModel.drugDataList.get(i);
+                    drug.setTargetMargin(targetMargin);
+                    inventoryTableModel.fireTableCellUpdated(i, 11); // 11 is the Suggested Selling Price column
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid number format for Target Margin. Please enter a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

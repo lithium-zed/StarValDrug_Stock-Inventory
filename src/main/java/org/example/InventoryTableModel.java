@@ -53,6 +53,8 @@ public class InventoryTableModel extends AbstractTableModel {
             case 8: return drug.getPurchase_cost();
             case 9: return drug.getCostPunit();
             case 10: return drug.getSelling_price();
+            case 11: return drug.getSuggested_price();
+            case 12: return drug.getMargin();
             default: return null;
         }
     }
@@ -81,7 +83,11 @@ public class InventoryTableModel extends AbstractTableModel {
             case 9:
                 return Double.class;        // Cost / UOM
             case 10:
-                return Double.class;       // Selling Price
+                return Double.class;        // Selling Price
+            case 11:
+                return Double.class;
+            case 12:
+                return Double.class;
             default:
                 return Object.class;
         }

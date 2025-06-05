@@ -1,139 +1,160 @@
-package org.example;
+    package org.example;
 
-import javax.swing.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+    import javax.swing.*;
+    import java.text.ParseException;
+    import java.text.SimpleDateFormat;
+    import java.util.Date;
 
-public class DrugData{
-    String vendor_name, c_p, brand_name, generic_name,unit_of_measure;
-    int quantity, batch_number;
-    double purchase_cost, costPunit, selling_price, suggested_price, margin;
-    Date exp_date;
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+    public class DrugData{
+        String vendor_name, c_p, brand_name, generic_name,unit_of_measure;
+        int quantity, batch_number;
+        double purchase_cost, costPunit, selling_price, suggested_price, margin;
+        Date exp_date;
+        TargetMargin targetMargin;
+        private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
-    public DrugData(int batch_number, String vendor_name, String c_p, String brand_name,
-                    String generic_name, int quantity,
-                    String unit_of_measure, String expDateString,
-                    double purchase_cost, double costPunit, double selling_price) {
-        this.vendor_name = vendor_name;
-        this.c_p = c_p;
-        this.brand_name = brand_name;
-        this.generic_name = generic_name;
-        try{
-            this.exp_date = DATE_FORMAT.parse(expDateString);
-        }catch (ParseException e){
-            this.exp_date = null;
+        public DrugData(int batch_number, String vendor_name, String c_p, String brand_name,
+                        String generic_name, int quantity,
+                        String unit_of_measure, String expDateString,
+                        double purchase_cost, double costPunit, double selling_price, TargetMargin targetMargin) {
+            this.vendor_name = vendor_name;
+            this.c_p = c_p;
+            this.brand_name = brand_name;
+            this.generic_name = generic_name;
+            try{
+                this.exp_date = DATE_FORMAT.parse(expDateString);
+            }catch (ParseException e){
+                this.exp_date = null;
+            }
+            this.unit_of_measure = unit_of_measure;
+            this.quantity = quantity;
+            this.batch_number = batch_number;
+            this.purchase_cost = purchase_cost;
+            this.costPunit = costPunit;
+            this.selling_price = selling_price;
+            this.targetMargin = targetMargin;
+            this.suggested_price = calculateSuggestedPrice();
         }
-        this.unit_of_measure = unit_of_measure;
-        this.quantity = quantity;
-        this.batch_number = batch_number;
-        this.purchase_cost = purchase_cost;
-        this.costPunit = costPunit;
-        this.selling_price = selling_price;
-    }
 
-    public DrugData(double suggested_price, double margin) {
-        this.suggested_price = suggested_price;
-        this.margin = margin;
-    }
-
-//    public double getSuggested_price(){
-//        suggested_price = getCostPunit() *
-//    }
-
-    public String getExpirationDateAsString(){
-        if(exp_date == null){
-            return "";
+        public DrugData(double suggested_price, double margin) {
+            this.suggested_price = suggested_price;
+            this.margin = margin;
         }
-        return DATE_FORMAT.format(exp_date);
-    }
 
-    public String getVendor_name() {
-        return vendor_name;
-    }
+        public void setTargetMargin(TargetMargin targetMargin) {
+            this.targetMargin = targetMargin;
+        }
 
-    public void setVendor_name(String vendor_name) {
-        this.vendor_name = vendor_name;
-    }
+        private double calculateSuggestedPrice() {
+            if (targetMargin != null) {
+                return costPunit * targetMargin.getTargetMargin() * 100;
+                //return getCostPunit() * (1 + targetMargin.getTargetMargin());
+            } else {
+                return 0.0; // Or some default value if targetMargin is not set
+            }
+        }
+        private double calculateMargin(){
+            return ((getSelling_price() - getCostPunit()) / getCostPunit()) * 100;
+        }
+        public double getMargin(){
+            return calculateMargin();
+        }
+        public double getSuggested_price(){
+            return calculateSuggestedPrice();
+        }
 
-    public String getC_p() {
-        return c_p;
-    }
+        public String getExpirationDateAsString(){
+            if(exp_date == null){
+                return "";
+            }
+            return DATE_FORMAT.format(exp_date);
+        }
 
-    public void setC_p(String c_p) {
-        this.c_p = c_p;
-    }
+        public String getVendor_name() {
+            return vendor_name;
+        }
 
-    public String getBrand_name() {
-        return brand_name;
-    }
+        public void setVendor_name(String vendor_name) {
+            this.vendor_name = vendor_name;
+        }
 
-    public void setBrand_name(String brand_name) {
-        this.brand_name = brand_name;
-    }
+        public String getC_p() {
+            return c_p;
+        }
 
-    public String getGeneric_name() {
-        return generic_name;
-    }
+        public void setC_p(String c_p) {
+            this.c_p = c_p;
+        }
 
-    public void setGeneric_name(String generic_name) {
-        this.generic_name = generic_name;
-    }
+        public String getBrand_name() {
+            return brand_name;
+        }
 
-    public void setExp_date(Date exp_date) {
-        this.exp_date = exp_date;
-    }
+        public void setBrand_name(String brand_name) {
+            this.brand_name = brand_name;
+        }
 
-    public Date getExp_date() {
-        return exp_date;
-    }
+        public String getGeneric_name() {
+            return generic_name;
+        }
 
-    public String getUnit_of_measure() {
-        return unit_of_measure;
-    }
+        public void setGeneric_name(String generic_name) {
+            this.generic_name = generic_name;
+        }
 
-    public void setUnit_of_measure(String unit_of_measure) {
-        this.unit_of_measure = unit_of_measure;
-    }
+        public void setExp_date(Date exp_date) {
+            this.exp_date = exp_date;
+        }
 
-    public int getQuantity() {
-        return quantity;
-    }
+        public Date getExp_date() {
+            return exp_date;
+        }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+        public String getUnit_of_measure() {
+            return unit_of_measure;
+        }
 
-    public int getBatch_number() {
-        return batch_number;
-    }
+        public void setUnit_of_measure(String unit_of_measure) {
+            this.unit_of_measure = unit_of_measure;
+        }
 
-    public void setBatch_number(int batch_number) {
-        this.batch_number = batch_number;
-    }
+        public int getQuantity() {
+            return quantity;
+        }
 
-    public double getPurchase_cost() {
-        return purchase_cost;
-    }
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
 
-    public void setPurchase_cost(double purchase_cost) {
-        this.purchase_cost = purchase_cost;
-    }
+        public int getBatch_number() {
+            return batch_number;
+        }
 
-    public double getCostPunit() {
-        return costPunit;
-    }
+        public void setBatch_number(int batch_number) {
+            this.batch_number = batch_number;
+        }
 
-    public void setCostPunit(double costPunit) {
-        this.costPunit = costPunit;
-    }
+        public double getPurchase_cost() {
+            return purchase_cost;
+        }
 
-    public double getSelling_price() {
-        return selling_price;
-    }
+        public void setPurchase_cost(double purchase_cost) {
+            this.purchase_cost = purchase_cost;
+        }
 
-    public void setSelling_price(double selling_price) {
-        this.selling_price = selling_price;
+        public double getCostPunit() {
+            return costPunit;
+        }
+
+        public void setCostPunit(double costPunit) {
+            this.costPunit = costPunit;
+        }
+
+        public double getSelling_price() {
+            return selling_price;
+        }
+
+        public void setSelling_price(double selling_price) {
+            this.selling_price = selling_price;
+        }
     }
-}

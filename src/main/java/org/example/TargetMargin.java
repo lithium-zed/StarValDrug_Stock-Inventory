@@ -2,11 +2,12 @@ package org.example;
 
 public class TargetMargin {
     double targetMargin;
-    InventoryFrame inventoryFrame;
 
-    public TargetMargin(double targetMargin, InventoryFrame inventoryFrame) {
+    public TargetMargin(double targetMargin) {
         this.targetMargin = targetMargin;
-        this.inventoryFrame = inventoryFrame;
+    }
+
+    public TargetMargin() {
     }
 
     public double getTargetMargin() {
