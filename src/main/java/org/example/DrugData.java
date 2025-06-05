@@ -8,7 +8,7 @@ import java.util.Date;
 public class DrugData{
     String vendor_name, c_p, brand_name, generic_name,unit_of_measure;
     int quantity, batch_number;
-    double purchase_cost, costPunit, selling_price;
+    double purchase_cost, costPunit, selling_price, suggested_price, margin;
     Date exp_date;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -32,6 +32,16 @@ public class DrugData{
         this.costPunit = costPunit;
         this.selling_price = selling_price;
     }
+
+    public DrugData(double suggested_price, double margin) {
+        this.suggested_price = suggested_price;
+        this.margin = margin;
+    }
+
+//    public double getSuggested_price(){
+//        suggested_price = getCostPunit() *
+//    }
+
     public String getExpirationDateAsString(){
         if(exp_date == null){
             return "";

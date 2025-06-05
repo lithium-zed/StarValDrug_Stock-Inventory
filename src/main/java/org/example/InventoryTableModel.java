@@ -9,7 +9,7 @@ import java.util.List;
 public class InventoryTableModel extends AbstractTableModel {
     ArrayList<DrugData> drugDataList;
     String[] header = {"Batch #", "Vendor Name", "C/P", "Brand Name", "Generic Name", "Quantity", "Unit of Measure",
-                            "Exp Date", "Purchase Cost", "Cost/Unit", "Selling Price"};
+                            "Exp Date", "Purchase Cost", "Cost/Unit", "Selling Price", "Suggested Selling Price", "Margin"};
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
     public InventoryTableModel() {

@@ -18,13 +18,14 @@ public class InventoryFrame extends JFrame implements ActionListener {
 
     // Table components - declared as instance variables
     private JTable inventoryTable;
+    private TargetMargin targetMargin;
     private InventoryTableModel inventoryTableModel;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
     JRadioButton c, p;
     ButtonGroup productOriginGroup;
 
-    private JButton addButton; // Declare the add button
+    private JButton addButton, setButton; // Declare the add button
 
     public InventoryFrame() throws HeadlessException {
         super("Inventory Management");
@@ -135,6 +136,8 @@ public class InventoryFrame extends JFrame implements ActionListener {
 
         // --- Create a JPanel for Target Margin ---
         // Changed to GridBagLayout for better alignment of label and field
+        setButton = new JButton("Set");
+        setButton.addActionListener(this);
         JPanel targetMarginPanel = new JPanel(new GridBagLayout());
         GridBagConstraints tmg_gbc = new GridBagConstraints();
         tmg_gbc.insets = new Insets(5, 5, 5, 5);
@@ -145,7 +148,7 @@ public class InventoryFrame extends JFrame implements ActionListener {
 
         tmg_gbc.gridx = 0; tmg_gbc.gridy = 0; targetMarginPanel.add(target_margin, tmg_gbc);
         tmg_gbc.gridx = 1; tmg_gbc.gridy = 0; tmg_gbc.fill = GridBagConstraints.HORIZONTAL; tmg_gbc.weightx = 1.0; targetMarginPanel.add(targetMarginField, tmg_gbc);
-
+        tmg_gbc.gridx = 2; tmg_gbc.gridy = 0; tmg_gbc.fill = GridBagConstraints.HORIZONTAL; tmg_gbc.weightx = 1.0; targetMarginPanel.add(setButton, tmg_gbc);
 
         // --- Create a JPanel for Buttons ---
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -178,6 +181,7 @@ public class InventoryFrame extends JFrame implements ActionListener {
         inventoryTable = new JTable(inventoryTableModel);
         inventoryTable.setFillsViewportHeight(true);
         inventoryTable.setAutoCreateRowSorter(true);
+        inventoryTable.getTableHeader().setReorderingAllowed(false);
 
         JScrollPane scrollPane = new JScrollPane(inventoryTable);
         scrollPane.setPreferredSize(new Dimension(850, 200));
@@ -267,6 +271,9 @@ public class InventoryFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "An unexpected error occurred: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 ex.printStackTrace();
             }
+        } else if (e.getSource() == setButton) {
+            targetMargin = new TargetMargin(Double.parseDouble(targetMarginField.getText()),this);
+            System.out.println(targetMargin.getTargetMargin());
         }
     }
 
