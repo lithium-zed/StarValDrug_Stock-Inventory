@@ -15,6 +15,10 @@ public class CheckOutTableModel extends AbstractTableModel {
         checkoutDataList.add(checkoutData);
         fireTableRowsInserted(checkoutDataList.size() - 1, checkoutDataList.size() - 1);
     }
+    public void removeItem(int selected){
+        checkoutDataList.remove(selected);
+        fireTableDataChanged();
+    }
 
     @Override
     public int getRowCount() {
