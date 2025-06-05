@@ -23,7 +23,6 @@ public class DrugData{
         try{
             this.exp_date = DATE_FORMAT.parse(expDateString);
         }catch (ParseException e){
-            JOptionPane.showMessageDialog(null, String.format("Error parsing date: %s - %s", expDateString,e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE));
             this.exp_date = null;
         }
         this.unit_of_measure = unit_of_measure;

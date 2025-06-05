@@ -5,7 +5,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class InventoryFrame extends JFrame implements ActionListener {
     JLabel vendorName, brandName, genericName, batchNumber, expirationDate, unitOfMeasure,
@@ -16,6 +19,7 @@ public class InventoryFrame extends JFrame implements ActionListener {
     // Table components - declared as instance variables
     private JTable inventoryTable;
     private InventoryTableModel inventoryTableModel;
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
     JRadioButton c, p;
     ButtonGroup productOriginGroup;
@@ -196,6 +200,19 @@ public class InventoryFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addButton) {
+            String expDateStr = expField.getText();
+            Date parsedExpirationDate = null; // Will hold the parsed Date object
+
+            try {
+                // Use the class-level DATE_FORMAT for parsing
+                DATE_FORMAT.setLenient(false); // Make parsing strict
+                parsedExpirationDate = DATE_FORMAT.parse(expDateStr);
+            } catch (ParseException ex) {
+                // If parsing fails, show an error and STOP the process
+                JOptionPane.showMessageDialog(this, "Invalid date format for Expiration Date. Please use MM/DD/YYYY.", "Date Input Error", JOptionPane.ERROR_MESSAGE);
+                return; // *** IMPORTANT: Exit the method here ***
+            }
+
             try {
                 // 1. Get data from input fields
                 String vendor = vendorField.getText();
@@ -219,6 +236,7 @@ public class InventoryFrame extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(this, "Please fill all text fields.", "Input Error", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
+
 
                 // Parse numerical fields, handle potential errors
                 int batchNum = Integer.parseInt(batchField.getText());
