@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class InventoryFrame extends JFrame implements ActionListener {
     JLabel vendorName, brandName, genericName, batchNumber, expirationDate, unitOfMeasure,
-            quantity, purchaseCost, costPerUnitofMeasure, sellingPrice;
+            quantity, purchaseCost, costPerUnitofMeasure, sellingPrice, target_margin;
     JTextField vendorField, brandField, genericField, batchField, expField, uomField, qtyField,
-            prchsField, costPerUnitField, sellingPriceField;
+            prchsField, costPerUnitField, sellingPriceField, targetMarginField;
 
     // Table components - declared as instance variables
     private JTable inventoryTable;
@@ -36,6 +36,7 @@ public class InventoryFrame extends JFrame implements ActionListener {
         purchaseCost = new JLabel("Purchase Cost:");
         costPerUnitofMeasure = new JLabel("Cost / Unit of Measure:");
         sellingPrice = new JLabel("Selling Price:");
+        target_margin = new JLabel("Target Margin:"); // New label
 
         // Initialize TextFields
         vendorField = new JTextField(15);
@@ -48,6 +49,7 @@ public class InventoryFrame extends JFrame implements ActionListener {
         prchsField = new JTextField(15);
         costPerUnitField = new JTextField(15);
         sellingPriceField = new JTextField(15);
+        targetMarginField = new JTextField(10); // New text field
 
         // --- Create a JPanel for Product Information (Input Fields) ---
         JPanel productInfoPanel = new JPanel(new GridBagLayout());
@@ -127,60 +129,73 @@ public class InventoryFrame extends JFrame implements ActionListener {
         productOriginPanel.add(c);
         productOriginPanel.add(p);
 
-        // --- Create a JPanel for Buttons ---
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Center the button
-        addButton = new JButton("Add Item"); // Initialize the button
-        buttonPanel.add(addButton);
+        // --- Create a JPanel for Target Margin ---
+        // Changed to GridBagLayout for better alignment of label and field
+        JPanel targetMarginPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints tmg_gbc = new GridBagConstraints();
+        tmg_gbc.insets = new Insets(5, 5, 5, 5);
+        tmg_gbc.anchor = GridBagConstraints.WEST; // Anchor to the left
 
-        // Register this class (InventoryFrame) as the ActionListener for the button
+        targetMarginPanel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(), "Margin Details", TitledBorder.LEFT, TitledBorder.TOP));
+
+        tmg_gbc.gridx = 0; tmg_gbc.gridy = 0; targetMarginPanel.add(target_margin, tmg_gbc);
+        tmg_gbc.gridx = 1; tmg_gbc.gridy = 0; tmg_gbc.fill = GridBagConstraints.HORIZONTAL; tmg_gbc.weightx = 1.0; targetMarginPanel.add(targetMarginField, tmg_gbc);
+
+
+        // --- Create a JPanel for Buttons ---
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        addButton = new JButton("Add Item");
+        buttonPanel.add(addButton);
         addButton.addActionListener(this);
 
 
-        // --- Combine Product Details, Product Origin, and Buttons into one input section ---
-        JPanel inputFormsAndButtonsPanel = new JPanel(new BorderLayout(10, 10)); // Use BorderLayout for overall layout
+        // --- Combine Product Origin and Target Margin Panels side-by-side ---
+        JPanel originAndMarginPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); // 10px horizontal gap
+        originAndMarginPanel.add(productOriginPanel);
+        originAndMarginPanel.add(targetMarginPanel);
+
+
+        // --- Combine Product Details, Combined Origin/Margin, and Buttons into one input section ---
+        JPanel inputFormsAndButtonsPanel = new JPanel(new BorderLayout(10, 10));
         inputFormsAndButtonsPanel.add(productInfoPanel, BorderLayout.CENTER); // Product details in center
-        inputFormsAndButtonsPanel.add(productOriginPanel, BorderLayout.SOUTH); // Product origin below
+        inputFormsAndButtonsPanel.add(originAndMarginPanel, BorderLayout.SOUTH); // Combined origin/margin below
         inputFormsAndButtonsPanel.add(buttonPanel, BorderLayout.EAST); // Button panel to the east (right side)
 
 
         // --- Setup the JTable ---
-        inventoryTableModel = new InventoryTableModel(); // Initialize your table model
+        inventoryTableModel = new InventoryTableModel();
 
         // Add some dummy data for testing
         inventoryTableModel.addDrugData(new DrugData(1001, "PharmaCo", "Purchased", "BrandA", "GenericX", 50, "Box", "12/31/2025", 10.50, 0.21, 0.35));
         inventoryTableModel.addDrugData(new DrugData(1002, "MediSupp", "Consigned", "BrandB", "GenericY", 100, "Tablet", "06/15/2024", 0.05, 0.05, 0.10));
         inventoryTableModel.addDrugData(new DrugData(1003, "Health Inc", "Purchased", "BrandC", "GenericZ", 20, "Vial", "01/01/2026", 50.00, 2.50, 4.00));
 
-        inventoryTable = new JTable(inventoryTableModel); // Create the table with your model
-        inventoryTable.setFillsViewportHeight(true); // Makes the table fill the height of the scroll pane
-        inventoryTable.setAutoCreateRowSorter(true); // Enables sorting by clicking column headers
+        inventoryTable = new JTable(inventoryTableModel);
+        inventoryTable.setFillsViewportHeight(true);
+        inventoryTable.setAutoCreateRowSorter(true);
 
-        // Put the table inside a JScrollPane for scrollability
         JScrollPane scrollPane = new JScrollPane(inventoryTable);
-        // Set a preferred size for the scroll pane to help with initial layout
-        scrollPane.setPreferredSize(new Dimension(850, 200)); // Adjust width and height as needed
+        scrollPane.setPreferredSize(new Dimension(850, 200));
 
         // --- Main layout panel for the entire frame content ---
-        JPanel mainLayoutPanel = new JPanel(new BorderLayout(10, 10)); // Outer BorderLayout with 10px gap
+        JPanel mainLayoutPanel = new JPanel(new BorderLayout(10, 10));
 
-        // --- CHANGE HERE: Table on top, input forms below ---
-        mainLayoutPanel.add(scrollPane, BorderLayout.NORTH); // Table (in scroll pane) at the NORTH
-        mainLayoutPanel.add(inputFormsAndButtonsPanel, BorderLayout.CENTER); // Input forms and buttons in the CENTER
+        mainLayoutPanel.add(scrollPane, BorderLayout.NORTH);
+        mainLayoutPanel.add(inputFormsAndButtonsPanel, BorderLayout.CENTER);
 
-
-        // Add the main layout panel to the JFrame
         this.add(mainLayoutPanel);
 
-        this.pack(); // Size the frame to fit its components
-        this.setLocationRelativeTo(null); // Center the frame on the screen
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Close operation
-        this.setVisible(true); // Make the frame visible
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
     }
 
     // --- actionPerformed method to handle button clicks ---
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == addButton) { // Check if the event source is the addButton
+        if (e.getSource() == addButton) {
             try {
                 // 1. Get data from input fields
                 String vendor = vendorField.getText();
@@ -188,20 +203,19 @@ public class InventoryFrame extends JFrame implements ActionListener {
                 String generic = genericField.getText();
                 String expDate = expField.getText();
                 String uom = uomField.getText();
-
-                // Radio Button selection
                 String cpType = "";
+
                 if (c.isSelected()) {
                     cpType = "Consigned";
                 } else if (p.isSelected()) {
                     cpType = "Purchased";
                 } else {
                     JOptionPane.showMessageDialog(this, "Please select Product Origin (Consigned/Purchased).", "Input Error", JOptionPane.WARNING_MESSAGE);
-                    return; // Stop if no origin selected
+                    return;
                 }
 
                 // Basic validation for non-numeric fields
-                if (vendor.isEmpty() || brand.isEmpty() || generic.isEmpty() || expDate.isEmpty() || uom.isEmpty()) {
+                if (vendor.isEmpty() || brand.isEmpty() || generic.isEmpty() || expDate.isEmpty() || uom.isEmpty() || targetMarginField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Please fill all text fields.", "Input Error", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
@@ -213,7 +227,9 @@ public class InventoryFrame extends JFrame implements ActionListener {
                 double costPU = Double.parseDouble(costPerUnitField.getText());
                 double sellingP = Double.parseDouble(sellingPriceField.getText());
 
-                // 2. Create new DrugData object
+
+                // 2. Create new DrugData object (Temporarily without targetMargin if DrugData doesn't have it yet)
+                // For now, I'm passing a dummy 0.0 for targetMargin if DrugData doesn't support it yet
                 DrugData newDrug = new DrugData(
                         batchNum, vendor, cpType, brand, generic, qty,
                         uom, expDate, purchaseC, costPU, sellingP
@@ -225,11 +241,13 @@ public class InventoryFrame extends JFrame implements ActionListener {
                 // 4. Clear input fields for next entry
                 clearInputFields();
 
+                JOptionPane.showMessageDialog(this, "Drug data added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Invalid number format for Batch #, Quantity, Costs, or Selling Price. Please enter valid numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Invalid number format for Batch #, Quantity, Costs, Selling Price, or Target Margin. Please enter valid numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "An unexpected error occurred: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                ex.printStackTrace(); // Print stack trace for debugging
+                ex.printStackTrace();
             }
         }
     }
@@ -246,7 +264,7 @@ public class InventoryFrame extends JFrame implements ActionListener {
         prchsField.setText("");
         costPerUnitField.setText("");
         sellingPriceField.setText("");
-        productOriginGroup.clearSelection(); // Deselect radio buttons
+        productOriginGroup.clearSelection();
     }
 
     public static void main(String[] args) {
