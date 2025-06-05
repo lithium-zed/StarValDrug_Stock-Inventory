@@ -49,7 +49,7 @@ public class InventoryTableModel extends AbstractTableModel {
             case 4: return drug.getGeneric_name();
             case 5: return drug.getQuantity();
             case 6: return drug.getUnit_of_measure();
-            case 7: return drug.getExp_date();
+            case 7: return drug.getExpirationDateAsString();
             case 8: return drug.getPurchase_cost();
             case 9: return drug.getCostPunit();
             case 10: return drug.getSelling_price();
@@ -77,7 +77,7 @@ public class InventoryTableModel extends AbstractTableModel {
             case 6:
                 return String.class;        // Unit Of Measure
             case 7:
-                return Date.class;          // EXTREMELY IMPORTANT: Tell sorter it's a Date
+                return String.class;          // EXTREMELY IMPORTANT: Tell sorter it's a Date
             case 8:
                 return Double.class;        // Purchase Cost
             case 9:

@@ -2,23 +2,29 @@ package org.example;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.regex.PatternSyntaxException;
 
 public class InventoryFrame extends JFrame implements ActionListener {
     JLabel vendorName, brandName, genericName, batchNumber, expirationDate, unitOfMeasure,
-            quantity, purchaseCost, costPerUnitofMeasure, sellingPrice, target_margin;
+            quantity, purchaseCost, costPerUnitofMeasure, sellingPrice, target_margin, searchLabel;
     JTextField vendorField, brandField, genericField, batchField, expField, uomField, qtyField,
-            prchsField, costPerUnitField, sellingPriceField, targetMarginField;
+            prchsField, costPerUnitField, sellingPriceField, targetMarginField, searchField;
 
     // Table components - declared as instance variables
     private JTable inventoryTable;
     private TargetMargin targetMargin;
+    private TableRowSorter<InventoryTableModel> sorter;
     private InventoryTableModel inventoryTableModel;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -41,7 +47,8 @@ public class InventoryFrame extends JFrame implements ActionListener {
         purchaseCost = new JLabel("Purchase Cost:");
         costPerUnitofMeasure = new JLabel("Cost / Unit of Measure:");
         sellingPrice = new JLabel("Selling Price:");
-        target_margin = new JLabel("Target Margin:"); // New label
+        target_margin = new JLabel("Target Margin:");
+        searchLabel = new JLabel("Search:");
 
         // Initialize TextFields
         vendorField = new JTextField(15);
@@ -54,7 +61,8 @@ public class InventoryFrame extends JFrame implements ActionListener {
         prchsField = new JTextField(15);
         costPerUnitField = new JTextField(15);
         sellingPriceField = new JTextField(15);
-        targetMarginField = new JTextField(10); // New text field
+        targetMarginField = new JTextField(10);
+        searchField = new JTextField(20);
 
         // --- Create a JPanel for Product Information (Input Fields) ---
         JPanel productInfoPanel = new JPanel(new GridBagLayout());
@@ -210,14 +218,70 @@ public class InventoryFrame extends JFrame implements ActionListener {
         inventoryTable.setAutoCreateRowSorter(true);
         inventoryTable.getTableHeader().setReorderingAllowed(false);
 
+        sorter = new TableRowSorter<>(inventoryTableModel);
+        inventoryTable.setRowSorter(sorter);
+
+        sorter.setComparator(7, new Comparator<String>() {
+            private final SimpleDateFormat parser = new SimpleDateFormat("MM/dd/yyyy"); // Local instance for thread-safety
+            @Override
+            public int compare(String dateStr1, String dateStr2) {
+                try {
+                    Date date1 = parser.parse(dateStr1);
+                    Date date2 = parser.parse(dateStr2);
+                    return date1.compareTo(date2);
+                } catch (ParseException e) {
+                    // Handle parsing errors (e.g., malformed date strings)
+                    // You might want to log this or treat malformed dates as first/last
+                    System.err.println("Error parsing date for sorting: " + e.getMessage());
+                    // Fallback to string comparison if parsing fails, or place them at the end/beginning
+                    return dateStr1.compareTo(dateStr2); // Fallback
+                }
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(inventoryTable);
         scrollPane.setPreferredSize(new Dimension(850, 200));
 
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        searchPanel.add(searchLabel);
+        searchPanel.add(searchField);
+
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            public void filterTable(){
+                String text = searchField.getText();
+                if(text.trim().isEmpty()){
+                    sorter.setRowFilter(null);
+                }else{
+                    try{
+                        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    }catch (PatternSyntaxException e){
+                        sorter.setRowFilter(null);
+                    }
+                }
+            }
+        });
+
+
         // --- Main layout panel for the entire frame content ---
         JPanel mainLayoutPanel = new JPanel(new BorderLayout(10, 10));
-
-        mainLayoutPanel.add(scrollPane, BorderLayout.NORTH);
-        mainLayoutPanel.add(inputFormsAndButtonsPanel, BorderLayout.CENTER);
+        mainLayoutPanel.add(searchPanel, BorderLayout.NORTH);
+        mainLayoutPanel.add(scrollPane, BorderLayout.CENTER);
+        mainLayoutPanel.add(inputFormsAndButtonsPanel, BorderLayout.SOUTH);
 
         this.add(mainLayoutPanel);
 
