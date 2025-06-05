@@ -31,7 +31,7 @@ public class InventoryFrame extends JFrame implements ActionListener {
     JRadioButton c, p;
     ButtonGroup productOriginGroup;
 
-    private JButton addButton, setButton; // Declare the add button
+    private JButton addButton, setButton, toSalesButton; // Declare the add button
 
     public InventoryFrame() throws HeadlessException {
         super("Inventory Management");
@@ -163,9 +163,11 @@ public class InventoryFrame extends JFrame implements ActionListener {
         // --- Create a JPanel for Buttons ---
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         addButton = new JButton("Add Item");
+        toSalesButton = new JButton("To Sales");
         buttonPanel.add(addButton);
+        buttonPanel.add(toSalesButton);
         addButton.addActionListener(this);
-
+        toSalesButton.addActionListener(this);
 
         // --- Combine Product Origin and Target Margin Panels side-by-side ---
         JPanel originAndMarginPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); // 10px horizontal gap
@@ -379,6 +381,9 @@ public class InventoryFrame extends JFrame implements ActionListener {
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Invalid number format for Target Margin. Please enter a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else if (e.getSource() == toSalesButton) {
+            SalesFrame salesFrame = new SalesFrame(this.inventoryTableModel);
+            salesFrame.setVisible(true);
         }
     }
 

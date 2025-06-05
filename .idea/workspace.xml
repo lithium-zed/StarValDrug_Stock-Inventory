@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2695f09b-bb14-42dd-b85d-cc904ffef095" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/CheckoutData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/CheckOutTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/CheckOutTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/InventoryFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/InventoryFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/SalesFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/SalesFrame.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,6 +39,7 @@
   "keyToString": {
     "Application.InventoryFrame.executor": "Run",
     "Application.Main.executor": "Run",
+    "Application.SalesFrame.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -47,7 +51,7 @@
     "project.structure.side.proportion": "0.0"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.SalesFrame">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
       <module name="Stock-Inventory" />
@@ -76,8 +80,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.SalesFrame" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.SalesFrame" />
       </list>
     </recent_temporary>
   </component>
